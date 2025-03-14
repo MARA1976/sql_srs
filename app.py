@@ -21,7 +21,7 @@ with tab1:
         except Exception as e:
             st.error(f"Erreur lors de l'exécution de la requête : {e}")
     else:  # Si aucune requête n'est saisie, afficher le DataFrame initial
-        st.warning("Veuillez entrer une requête SQL.")
+        st.warning("Enter your SQL query.")
         st.dataframe(df)
 
 
