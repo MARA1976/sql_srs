@@ -16,7 +16,7 @@ with tab1:
     if sql_query.strip():  # Si une requête est saisie
         try:
             result = duckdb.query(sql_query).df()
-            st.write(f"You have entered the following query: {sql_query}")
+            st.write(f"You have entered the following query : {sql_query}")
             st.dataframe(result)
         except Exception as e:
             st.error(f"Erreur lors de l'exécution de la requête : {e}")
