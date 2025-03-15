@@ -2,6 +2,19 @@ import streamlit as st
 import pandas as pd
 import duckdb
 
+st.write("""
+#SQL SRS  s
+Spaced repetition  System SQL practice
+""")
+option = st.selectbox(
+    "What would you like to review ?",
+    ("Joins", "GroupBy", "Windows Functions"),
+    index = None,
+    placeholder = "Select a theme..."
+)
+
+st.write("You selected:", option)
+
 # Création des onglets
 tab1, tab2, tab3 = st.tabs(["Cat", "Dog", "Owl"])
 
