@@ -16,7 +16,7 @@ food_item, food_price
 cookie juice,2.5
 chocolatine,3"""
 
-food_item = pd.read_csv(io.StringIO(csv2))
+food_items = pd.read_csv(io.StringIO(csv2))
 
 answer = """
 SELECT * FROM beverages
@@ -36,7 +36,7 @@ with tab2:
     st.write("table: beverages")
     st.dataframe(beverages)
     st.write("table: food_items")
-    st.dataframe(food_item)
+    st.dataframe(food_items)
     st.write("expected:")
     st.dataframe(solution)
 
