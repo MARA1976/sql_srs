@@ -17,7 +17,7 @@ cookie juice,2.5
 chocolatine,3
 """
 
-food_items = pd.read_csv(io.StringIO(csv2))
+food_item = pd.read_csv(io.StringIO(csv2))
 
 st.write("""
 #SQL SRS Spaced repetition  System SQL practice
@@ -49,8 +49,8 @@ tab2, tab3 = st.tabs({"tables", "solution"})
 with tab2:
     st.write("table: beverages")
     st.dataframe(beverages)
-    st.write("table: food_items")
-    st.dataframe(food_items)
+    st.write("table: food_item")
+    st.dataframe(food_item)
     st.write("expected:")
     st.dataframe(solution)
 
