@@ -1,41 +1,47 @@
 import streamlit as st
 import pandas as pd
 import duckdb
+import io
 
-st.write("""
-#SQL SRS  s
-Spaced repetition  System SQL practice
-""")
-option = st.selectbox(
-    "What would you like to review ?",
-    ("Joins", "GroupBy", "Windows Functions"),
-    index = None,
-    placeholder = "Select a theme..."
-)
+csv = """
+beverage.price
+orange juice,2.5
+Express,2
+Tea,3
+"""
 
-st.write("You selected:", option)
+beverages = pd.read_csv(io.StringIO(csv))
+csv2 = """
+food_item, food_price
+cookie juice,2.5
+chocolatine,3"""
 
-# Création des onglets
-tab1, tab2, tab3 = st.tabs(["Cat", "Dog", "Owl"])
+food_item = pd.read_csv(io.StringIO(csv2))
 
-# Données pour le DataFrame initial
-data = {"a": [1, 2, 3], "b": [4, 5, 6]}
-df = pd.DataFrame(data)
+answer = """
+SELECT * FROM beverages
+CROSS JOIN food_item
+"""
 
-# Onglet 1 - Saisie de requête SQL
-with tab1:
-    sql_query = st.text_area(label="Enter your input")
+solution = duckdb.sql(answer).df()
+st.header("enter your code:")
+query = st.text_area(label = "votre code sql ici", key = "user_input")
+if query:
+    result = duckdb.sql(query).df()
+    st.dataframe(result)
 
-    if sql_query.strip():  # Si une requête est saisie
-        try:
-            result = duckdb.query(sql_query).df()
-            st.write(f"You have entered the following query : {sql_query}")
-            st.dataframe(result)
-        except Exception as e:
-            st.error(f"Erreur lors de l'exécution de la requête : {e}")
-    else:  # Si aucune requête n'est saisie, afficher le DataFrame initial
-        st.warning("Enter your SQL query.")
-        st.dataframe(df)
+tab2, tab3 = st.tabs({"tables", "solution"})
+
+with tab2:
+    st.write("table: beverages")
+    st.dataframe(beverages)
+    st.write("table: food_items")
+    st.dataframe(food_item)
+    st.write("expected:")
+    st.dataframe(solution)
+
+with tab3:
+    st.write(answer)
 
 
 
