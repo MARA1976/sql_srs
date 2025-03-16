@@ -3,9 +3,8 @@ import pandas as pd
 import duckdb
 import io
 
-
 csv = """
-beverage.price
+beverage, price
 orange juice,2.5
 Express,2
 Tea,3
@@ -17,46 +16,55 @@ cookie juice,2.5
 chocolatine,3
 """
 
-food_item = pd.read_csv(io.StringIO(csv2))
+food_items = pd.read_csv(io.StringIO(csv2))
 
 st.write("""
 #SQL SRS Spaced repetition  System SQL practice
 """)
 
-answer = """
+answer_str = """
 SELECT * FROM beverages
-CROSS JOIN food_item
+CROSS JOIN food_items
 """
-solution = duckdb.sql(answer).df()
+solution_df = duckdb.sql(answer_str).df()
 
 with st.sidebar:
     option = st.selectbox(
         "what would you like to review?",
         ("Joins", "GroupBy", "Windows Functions"),
-    index = None,
-    placeholder = "Select a theme..."
+        index=None,
+        placeholder="Select a theme..."
     )
     st.write("You selected:", option)
 
 st.header("enter your code:")
-query = st.text_area(label = "votre code sql ici", key = "user_input")
+query = st.text_area(label="votre code sql ici", key="user_input")
 if query:
     result = duckdb.sql(query).df()
     st.dataframe(result)
+
+
+    try:
+        result = result[solution_df.columns]
+        st.dataframe(result.compare(solution_df))
+    except KeyError as a:
+        st.write("Some columns are missing")
+
+    n_lines_difference = result.shape[0] - solution_df.shape[0]
+    if n_lines_difference  != 0:
+     st.write(
+        f"result has a {n_lines_difference } lines difference with the solution"
+     )
 
 tab2, tab3 = st.tabs({"tables", "solution"})
 
 with tab2:
     st.write("table: beverages")
     st.dataframe(beverages)
-    st.write("table: food_item")
-    st.dataframe(food_item)
+    st.write("table: food_items")
+    st.dataframe(food_items)
     st.write("expected:")
-    st.dataframe(solution)
+    st.dataframe(solution_df)
 
 with tab3:
-    st.write(answer)
-
-
-
-
+    st.write(answer_str)
