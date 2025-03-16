@@ -5,7 +5,7 @@ import io
 
 
 csv = """
-beverage.price
+beverage, price
 orange juice,2.5
 Express,2
 Tea,3
