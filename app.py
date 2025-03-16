@@ -3,27 +3,41 @@ import pandas as pd
 import duckdb
 import io
 
+
 csv = """
 beverage.price
 orange juice,2.5
 Express,2
 Tea,3
 """
-
 beverages = pd.read_csv(io.StringIO(csv))
 csv2 = """
 food_item, food_price
 cookie juice,2.5
-chocolatine,3"""
+chocolatine,3
+"""
 
-food_item = pd.read_csv(io.StringIO(csv2))
+food_items = pd.read_csv(io.StringIO(csv2))
+
+st.write("""
+#SQL SRS Spaced repetition  System SQL practice
+""")
 
 answer = """
 SELECT * FROM beverages
 CROSS JOIN food_item
 """
-
 solution = duckdb.sql(answer).df()
+
+with st.sidebar:
+    option = st.selectbox(
+        "what would you like to review?",
+        ("Joins", "GroupBy", "Windows Functions"),
+    index = None,
+    placeholder = "Select a theme..."
+    )
+    st.write("You selected:", option)
+
 st.header("enter your code:")
 query = st.text_area(label = "votre code sql ici", key = "user_input")
 if query:
@@ -36,7 +50,7 @@ with tab2:
     st.write("table: beverages")
     st.dataframe(beverages)
     st.write("table: food_items")
-    st.dataframe(food_item)
+    st.dataframe(food_items)
     st.write("expected:")
     st.dataframe(solution)
 
