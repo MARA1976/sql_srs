@@ -18,6 +18,7 @@ cookie juice,2.5
 chocolatine,3
 """
 
+
 food_items = pd.read_csv(io.StringIO(CSV2))
 
 st.write(
