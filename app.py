@@ -1,34 +1,65 @@
-import streamlit as st
-import pandas as pd
-import duckdb
+# pylint: disable=missing-module-docstring
 import io
 
-csv = """
-beverage,price
+import duckdb
+import pandas as pd
+import streamlit as st
+
+CSV = """
+beverage, price
 orange juice,2.5
 Express,2
 Tea,3
 """
-
-beverages = pd.read_csv(io.StringIO(csv))
-csv2 = """
+beverages = pd.read_csv(io.StringIO(CSV))
+CSV2= """
 food_item, food_price
 cookie juice,2.5
-chocolatine,3"""
+chocolatine,3
+"""
 
-food_items = pd.read_csv(io.StringIO(csv2))
 
-answer = """
+food_items = pd.read_csv(io.StringIO(CSV2))
+
+st.write(
+    """
+#SQL SRS Spaced repetition  System SQL practice
+"""
+)
+
+ANSWER_STR= """
 SELECT * FROM beverages
 CROSS JOIN food_items
 """
+solution_df = duckdb.sql(ANSWER_STR).df()
 
-solution = duckdb.sql(answer).df()
+with st.sidebar:
+    option = st.selectbox(
+        "what would you like to review?",
+        ("Joins", "GroupBy", "Windows Functions"),
+        index=None,
+        placeholder="Select a theme...",
+    )
+    st.write("You selected:", option)
+
 st.header("enter your code:")
-query = st.text_area(label = "votre code sql ici", key = "user_input")
+query = st.text_area(label="votre code sql ici", key="user_input")
 if query:
     result = duckdb.sql(query).df()
     st.dataframe(result)
+
+    try:
+        result = result[solution_df.columns]
+        st.dataframe(result.compare(solution_df))
+    except KeyError as a:
+        st.write("Some columns are missing")
+
+    n_lines_difference = result.shape[0] - solution_df.shape[0]
+    if n_lines_difference != 0:
+        st.write(
+            f"result has a {n_lines_difference } lines difference with the solution"
+        )
+
 
 tab2, tab3 = st.tabs({"tables", "solution"})
 
@@ -38,11 +69,7 @@ with tab2:
     st.write("table: food_items")
     st.dataframe(food_items)
     st.write("expected:")
-    st.dataframe(solution)
+    st.dataframe(solution_df)
 
 with tab3:
-    st.write(answer)
-
-
-
-
+    st.write(ANSWER_STR)
