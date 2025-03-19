@@ -22,11 +22,6 @@ chocolatine,3
 
 food_items = pd.read_csv(io.StringIO(CSV2))
 
-st.write(
-    """
-#SQL SRS Spaced repetition  System SQL practice
-"""
-)
 
 ANSWER_STR = """
 SELECT * FROM beverages
