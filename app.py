@@ -12,7 +12,7 @@ Express,2
 Tea,3
 """
 beverages = pd.read_csv(io.StringIO(CSV))
-CSV2= """
+CSV2 = """
 food_item, food_price
 cookie juice,2.5
 chocolatine,3
@@ -26,7 +26,7 @@ st.write(
 """
 )
 
-ANSWER_STR= """
+ANSWER_STR = """
 SELECT * FROM beverages
 CROSS JOIN food_items
 """
