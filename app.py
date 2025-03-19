@@ -5,6 +5,7 @@ import duckdb
 import pandas as pd
 import streamlit as st
 
+
 CSV = """
 beverage, price
 orange juice,2.5
@@ -12,12 +13,12 @@ Express,2
 Tea,3
 """
 beverages = pd.read_csv(io.StringIO(CSV))
+
 CSV2 = """
 food_item, food_price
 cookie juice,2.5
 chocolatine,3
 """
-
 
 food_items = pd.read_csv(io.StringIO(CSV2))
 
